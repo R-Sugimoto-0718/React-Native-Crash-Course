@@ -6,7 +6,9 @@ import {
   View,
   TextInput,
   Button,
-  SafeAreaView
+  SafeAreaView,
+  ScrollView,
+  FlatList
 } from 'react-native';
 
 export default function App() {
@@ -18,7 +20,11 @@ export default function App() {
   }
 
   const addGoalHandler = () => {
-    setCourseGoals(currentGoals => [...currentGoals, enteredGoal])
+    setCourseGoals(currentGoals => [
+      ...currentGoals,
+      // 今はkey意外にもidで両方サポートされている
+      { id: Math.random().toString(), value: enteredGoal }
+    ])
   }
 
   return (
@@ -33,9 +39,14 @@ export default function App() {
           />
           <Button title="Add" onPress={addGoalHandler} />
         </View>
-        <View>
-          {courseGoals.map((goal) => <Text key={goal}>{goal}</Text>)}
-        </View>
+        <FlatList
+          keyExtractor={(item, index) => item.id}
+          data={courseGoals}
+          renderItem={itemData =>
+            <View style={styles.listItem}>
+              <Text>{itemData.item.value}</Text>
+            </View>} />
+
       </View>
     </SafeAreaView>
   );
@@ -55,5 +66,12 @@ const styles = StyleSheet.create({
     borderBottomColor: 'black',
     borderBottomWidth: 1,
     padding: 10
+  },
+  listItem: {
+    padding: 10,
+    marginVertical: 10,
+    backgroundColor: '#ccc',
+    borderColor: 'black',
+    borderWidth: 1
   }
 });
