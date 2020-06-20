@@ -11,6 +11,8 @@ import {
   FlatList
 } from 'react-native';
 
+import GoalItem from './components/GoalItem';
+
 export default function App() {
   const [enteredGoal, setEnteredGoal] = useState('')
   const [courseGoals, setCourseGoals] = useState([])
@@ -42,10 +44,9 @@ export default function App() {
         <FlatList
           keyExtractor={(item, index) => item.id}
           data={courseGoals}
-          renderItem={itemData =>
-            <View style={styles.listItem}>
-              <Text>{itemData.item.value}</Text>
-            </View>} />
+          renderItem={itemData =>(
+            <GoalItem title={itemData.item.value}/>
+          )} />
 
       </View>
     </SafeAreaView>
